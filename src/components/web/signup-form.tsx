@@ -20,9 +20,12 @@ import { signupSchema } from '@/schemas/auth'
 import { authClient } from '@/lib/auth-client'
 import { toast } from 'sonner'
 import { useNavigate } from '@tanstack/react-router'
+import { useTransition } from 'react'
+import { Spinner } from '../ui/spinner'
 
 export function SignupForm() {
   const navigate = useNavigate()
+  const [isPending, startTransition] = useTransition()
   const form = useForm({
     defaultValues: {
       fullName: '',
@@ -32,23 +35,25 @@ export function SignupForm() {
     validators: {
       onSubmit: signupSchema,
     },
-    onSubmit: async ({ value }) => {
-      await authClient.signUp.email({
-        email: value.email,
-        password: value.password,
-        name: value.fullName,
-        // callbackURL: '/dashboard',
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success('Account created successfully')
-            navigate({ to: '/dashboard' })
+    onSubmit: ({ value }) => {
+      startTransition(async () => {
+        await authClient.signUp.email({
+          email: value.email,
+          password: value.password,
+          name: value.fullName,
+          // callbackURL: '/dashboard',
+          fetchOptions: {
+            onSuccess: () => {
+              toast.success('Account created successfully')
+              navigate({ to: '/dashboard' })
+            },
+            onError: ({ error }) => {
+              toast.error('Failed to create account', {
+                description: error.message,
+              })
+            },
           },
-          onError: ({ error }) => {
-            toast.error('Failed to create account', {
-              description: error.message,
-            })
-          },
-        },
+        })
       })
     },
   })
@@ -148,7 +153,10 @@ export function SignupForm() {
             />
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={isPending}>
+                  {isPending && <Spinner />}
+                  {isPending ? 'Creating account...' : 'Create Account'}
+                </Button>
                 <FieldDescription className="px-6 text-center">
                   Already have an account? <Link to="/login">Sign in</Link>
                 </FieldDescription>
