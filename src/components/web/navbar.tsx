@@ -1,4 +1,6 @@
-import { Button } from '../ui/button'
+import { Link } from '@tanstack/react-router'
+import { buttonVariants } from '../ui/button'
+import { ThemeToggle } from './theme-toggle'
 
 const Navbar = () => {
   return (
@@ -9,8 +11,13 @@ const Navbar = () => {
           <h1 className="text-lg font-semibold">Tanstack Start</h1>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline">Log in</Button>
-          <Button>Get started</Button>
+          <ThemeToggle />
+          <Link to="/login" className={buttonVariants({ variant: 'outline' })}>
+            Log in
+          </Link>
+          <Link to="/sign-up" className={buttonVariants()}>
+            Get started
+          </Link>
         </div>
       </div>
     </nav>
