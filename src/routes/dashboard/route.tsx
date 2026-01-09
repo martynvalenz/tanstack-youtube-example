@@ -14,8 +14,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { getSessionFn } from '@/data/session'
 
 export const Route = createFileRoute('/dashboard')({
+  loader: async () => {
+    const session = await getSessionFn()
+    return {
+      user: session.user,
+    }
+  },
   component: RouteComponent,
 })
 
