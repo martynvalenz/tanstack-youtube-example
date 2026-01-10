@@ -7,22 +7,17 @@ datasource db {
   provider = "postgresql"
 }
 
-model Todo {
-  id        Int      @id @default(autoincrement())
-  title     String
-  createdAt DateTime @default(now())
-}
-
 model User {
-  id            String    @id
+  id            String      @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean     @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   sessions      Session[]
   accounts      Account[]
+  savedItems    SavedItem[]
 
   @@unique([email])
   @@map("users")
@@ -74,4 +69,34 @@ model Verification {
 
   @@index([identifier])
   @@map("verifications")
+}
+
+model SavedItem {
+  id          String     @id @default(cuid())
+  url         String     @db.Text
+  title       String?    @db.Text
+  content     String?    @db.Text // Clean markdown from firecrawl
+  summary     String?    @db.Text // AI-generated summary
+  tags        String[] // AI-generated tags
+  author      String?    @db.Text
+  publishedAt DateTime?
+  ogImage     String?    @db.Text
+  userId      String     @db.VarChar(40)
+  status      ItemStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([url])
+  @@index([author])
+  @@map("saved_items")
+}
+
+enum ItemStatus {
+  PENDING // Just saved, not scraped yet
+  PROCESSING // Scraping in progress
+  COMPLETED // Ready to view
+  FAILED // Scraping failed
 }
