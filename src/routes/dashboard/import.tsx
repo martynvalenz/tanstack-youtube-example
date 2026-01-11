@@ -17,7 +17,12 @@ import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { Spinner } from '@/components/ui/spinner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { bulkScrapeUrlsFn, mapUrlFn, scrapeUrlFn } from '@/data/items'
+import {
+  type BulkScrapeProgress,
+  bulkScrapeUrlsFn,
+  mapUrlFn,
+  scrapeUrlFn,
+} from '@/data/items'
 import {
   bulkImportSchema,
   importSchema,
@@ -37,6 +42,7 @@ export const Route = createFileRoute('/dashboard/import')({
 function RouteComponent() {
   const [isPending, startTransition] = useTransition()
   const [bulkIsPending, startBulkTransition] = useTransition()
+  const [progress, setProgress] = useState<BulkScrapeProgress | null>(null)
   //bulk import state
   const [discoveredLinks, setDiscoveredLinks] = useState<
     Array<SearchResultWeb>

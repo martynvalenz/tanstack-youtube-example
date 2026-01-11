@@ -11,6 +11,13 @@ import { ItemStatus } from '@/generated/prisma/enums'
 import { authFnMiddleware } from '@/middlewares/auth.middleware'
 import z from 'zod'
 
+export type BulkScrapeProgress = {
+  completed: number
+  total: number
+  url: string
+  status: 'success' | 'failed'
+}
+
 export const scrapeUrlFn = createServerFn({
   method: 'POST',
 })
@@ -153,4 +160,20 @@ export const bulkScrapeUrlsFn = createServerFn({
         })
       }
     }
+  })
+
+export const getItemsFn = createServerFn({
+  method: 'GET',
+})
+  .middleware([authFnMiddleware])
+  .handler(async ({ context }) => {
+    const items = await prisma.savedItem.findMany({
+      where: {
+        userId: context.user.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    return items
   })
