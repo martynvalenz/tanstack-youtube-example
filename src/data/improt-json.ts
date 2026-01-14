@@ -64,3 +64,16 @@ export const getImportedJsonFn = createServerFn({
       })),
     }
   })
+
+export const deleteImportedJsonFn = createServerFn({
+  method: 'POST',
+})
+  .middleware([authFnMiddleware])
+  .handler(async ({ context }) => {
+    await prisma.product.deleteMany({
+      where: {
+        userId: context.user.id,
+      },
+    })
+    return { success: true }
+  })

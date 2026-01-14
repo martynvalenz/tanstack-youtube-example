@@ -6,8 +6,9 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import { getImportedJsonFn } from '@/data/improt-json'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { exportToExcel } from '@/data/export-xlsx'
+import { deleteImportedJsonFn, getImportedJsonFn } from '@/data/improt-json'
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { Image } from '@unpic/react'
 
 export const Route = createFileRoute('/dashboard/imported-json')({
@@ -21,11 +22,32 @@ export const Route = createFileRoute('/dashboard/imported-json')({
 })
 
 function RouteComponent() {
+  const router = useRouter()
   const { products } = Route.useLoaderData()
+
+  const onDelete = async () => {
+    await deleteImportedJsonFn()
+
+    router.navigate({ to: '/dashboard/import-json' })
+  }
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">Imported JSON</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Imported JSON</h1>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="excel"
+            size="sm"
+            onClick={() => exportToExcel(products, 'products.xlsx')}
+          >
+            Export xlsx
+          </Button>
+          <Button variant="destructive" size="sm" onClick={onDelete}>
+            Delete data
+          </Button>
+        </div>
+      </div>
       <div className="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => (
           <Item key={product.id} className="border border-border rounded-md">
