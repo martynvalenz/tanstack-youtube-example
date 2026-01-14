@@ -8,8 +8,10 @@ import {
 } from '@/components/ui/item'
 import { exportToExcel } from '@/data/export-xlsx'
 import { deleteImportedJsonFn, getImportedJsonFn } from '@/data/improt-json'
+import { copyToClipboard } from '@/lib/clipboard'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { Image } from '@unpic/react'
+import { Copy, SquareArrowOutUpRight } from 'lucide-react'
 
 export const Route = createFileRoute('/dashboard/imported-json')({
   loader: async () => {
@@ -65,10 +67,17 @@ function RouteComponent() {
               <ItemDescription>${product.price}</ItemDescription>
             </ItemContent>
             <ItemContent className="flex-none text-center">
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="icon-sm" asChild>
                 <Link target="_blank" to={product.link || ''}>
-                  Open link
+                  <SquareArrowOutUpRight />
                 </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                onClick={() => copyToClipboard(product.link || '')}
+              >
+                <Copy />
               </Button>
             </ItemContent>
           </Item>

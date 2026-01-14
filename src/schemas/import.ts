@@ -32,3 +32,11 @@ export const importJsonSchema = z.object({
 })
 
 export type ImportJsonSchema = z.infer<typeof importJsonSchema>
+
+export const scrapeUrlSchema = z.object({
+  title: z.string(),
+  details: z.string(),
+  image: z.string().url(),
+})
+
+export type ScrapeUrlSchema = z.infer<typeof scrapeUrlSchema>

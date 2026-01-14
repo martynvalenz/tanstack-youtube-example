@@ -1,3 +1,8 @@
+import { importSchema } from '@/schemas/import'
+import { useForm } from '@tanstack/react-form'
+import { createFileRoute } from '@tanstack/react-router'
+import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
 import {
   Card,
   CardContent,
@@ -11,35 +16,52 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
-import { createFileRoute } from '@tanstack/react-router'
-import { useForm } from '@tanstack/react-form'
-import { importJsonSchema } from '@/schemas/import'
-import { toast } from 'sonner'
-import { useTransition } from 'react'
-import { importJsonFn } from '@/data/improt-json'
-import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Input } from '@/components/ui/input'
+import { scrapeUrlFn } from '@/data/scrape-url'
+import { Image } from '@unpic/react'
 
-export const Route = createFileRoute('/dashboard/import-json')({
+export const Route = createFileRoute('/dashboard/scrape-link')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const [isPending, startTransition] = useTransition()
-
+  const [scrapedData, setScrapedData] = useState<{
+    id: string
+    title: string
+    details: string
+    image: string
+    url: string
+  }>({
+    id: '',
+    title: '',
+    details: '',
+    image: '',
+    url: '',
+  })
   const form = useForm({
     defaultValues: {
-      url: 'https://www.albertsons.com/shop/product-details',
-      json: '',
+      url: '',
     },
     validators: {
-      onSubmit: importJsonSchema,
+      onSubmit: importSchema,
     },
     onSubmit: ({ value }) => {
       startTransition(async () => {
-        await importJsonFn({ data: value })
+        const data = await scrapeUrlFn({ data: value })
+        if (data?.error) {
+          toast.error(data?.error)
+          return
+        }
+        setScrapedData({
+          id: data.item.id,
+          title: data.item.title,
+          details: data.item.details || '',
+          image: data.item.image || '',
+          url: data.item.url || '',
+        })
         toast.success('JSON imported successfully')
         form.reset()
       })
@@ -93,30 +115,6 @@ function RouteComponent() {
                     )
                   }}
                 />
-                <form.Field
-                  name="json"
-                  children={(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>JSON</FieldLabel>
-                        <Textarea
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          rows={10}
-                        />
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
-                      </Field>
-                    )
-                  }}
-                />
                 <Button type="submit" disabled={isPending}>
                   {isPending ? (
                     <>
@@ -124,12 +122,30 @@ function RouteComponent() {
                       <span>Processing...</span>
                     </>
                   ) : (
-                    'Import JSON'
+                    'Scrape url'
                   )}
                 </Button>
               </FieldGroup>
             </form>
           </CardContent>
+          {scrapedData.id && (
+            <CardContent>
+              <div className="flex flex-col gap-4">
+                <h2 className="text-lg font-bold">Scraped data</h2>
+                <p className="text-muted-foreground">
+                  <Image
+                    src={scrapedData.image}
+                    alt={scrapedData.title}
+                    width={200}
+                    height={200}
+                  />
+                </p>
+                <p className="text-muted-foreground">{scrapedData.title}</p>
+                <p className="text-muted-foreground">{scrapedData.url}</p>
+                <p className="text-muted-foreground">{scrapedData.details}</p>
+              </div>
+            </CardContent>
+          )}
         </Card>
       </div>
     </div>

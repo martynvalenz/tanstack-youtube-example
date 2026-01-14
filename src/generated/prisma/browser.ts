@@ -47,3 +47,8 @@ export type SavedItem = Prisma.SavedItemModel
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model ProductDetail
+ * 
+ */
+export type ProductDetail = Prisma.ProductDetailModel

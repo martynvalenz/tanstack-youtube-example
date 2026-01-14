@@ -13,6 +13,7 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardScrapeLinkRouteImport } from './routes/dashboard/scrape-link'
 import { Route as DashboardItemsRouteImport } from './routes/dashboard/items'
 import { Route as DashboardImportedJsonRouteImport } from './routes/dashboard/imported-json'
 import { Route as DashboardImportJsonRouteImport } from './routes/dashboard/import-json'
@@ -39,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardScrapeLinkRoute = DashboardScrapeLinkRouteImport.update({
+  id: '/scrape-link',
+  path: '/scrape-link',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardItemsRoute = DashboardItemsRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/import-json': typeof DashboardImportJsonRoute
   '/dashboard/imported-json': typeof DashboardImportedJsonRoute
   '/dashboard/items': typeof DashboardItemsRoute
+  '/dashboard/scrape-link': typeof DashboardScrapeLinkRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/login': typeof AuthLoginIndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/dashboard/import-json': typeof DashboardImportJsonRoute
   '/dashboard/imported-json': typeof DashboardImportedJsonRoute
   '/dashboard/items': typeof DashboardItemsRoute
+  '/dashboard/scrape-link': typeof DashboardScrapeLinkRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/login': typeof AuthLoginIndexRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/dashboard/import-json': typeof DashboardImportJsonRoute
   '/dashboard/imported-json': typeof DashboardImportedJsonRoute
   '/dashboard/items': typeof DashboardItemsRoute
+  '/dashboard/scrape-link': typeof DashboardScrapeLinkRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_auth/login/': typeof AuthLoginIndexRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/dashboard/import-json'
     | '/dashboard/imported-json'
     | '/dashboard/items'
+    | '/dashboard/scrape-link'
     | '/dashboard/'
     | '/api/auth/$'
     | '/login'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/dashboard/import-json'
     | '/dashboard/imported-json'
     | '/dashboard/items'
+    | '/dashboard/scrape-link'
     | '/dashboard'
     | '/api/auth/$'
     | '/login'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/dashboard/import-json'
     | '/dashboard/imported-json'
     | '/dashboard/items'
+    | '/dashboard/scrape-link'
     | '/dashboard/'
     | '/api/auth/$'
     | '/_auth/login/'
@@ -199,6 +211,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/scrape-link': {
+      id: '/dashboard/scrape-link'
+      path: '/scrape-link'
+      fullPath: '/dashboard/scrape-link'
+      preLoaderRoute: typeof DashboardScrapeLinkRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/items': {
@@ -280,6 +299,7 @@ interface DashboardRouteRouteChildren {
   DashboardImportJsonRoute: typeof DashboardImportJsonRoute
   DashboardImportedJsonRoute: typeof DashboardImportedJsonRoute
   DashboardItemsRoute: typeof DashboardItemsRoute
+  DashboardScrapeLinkRoute: typeof DashboardScrapeLinkRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
@@ -289,6 +309,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardImportJsonRoute: DashboardImportJsonRoute,
   DashboardImportedJsonRoute: DashboardImportedJsonRoute,
   DashboardItemsRoute: DashboardItemsRoute,
+  DashboardScrapeLinkRoute: DashboardScrapeLinkRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 

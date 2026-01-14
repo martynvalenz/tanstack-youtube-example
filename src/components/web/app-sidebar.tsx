@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BookmarkIcon, Compass, Import } from 'lucide-react'
+import { BookmarkIcon, ChevronsLeftRightEllipsis, Import } from 'lucide-react'
 
 import { NavUser } from '@/components/web/nav-user'
 import {
@@ -17,24 +17,24 @@ import { NavPrimary } from './nav-primary'
 import { NavPrimaryProps } from '@/lib/types'
 
 const navItems: NavPrimaryProps['items'] = linkOptions([
-  {
-    title: 'Items',
-    to: '/dashboard/items',
-    icon: BookmarkIcon,
-    activeOptions: { exact: false },
-  },
-  {
-    title: 'Import',
-    to: '/dashboard/import',
-    icon: Import,
-    activeOptions: { exact: false },
-  },
-  {
-    title: 'Discover',
-    to: '/dashboard/discover',
-    icon: Compass,
-    activeOptions: { exact: false },
-  },
+  // {
+  //   title: 'Items',
+  //   to: '/dashboard/items',
+  //   icon: BookmarkIcon,
+  //   activeOptions: { exact: false },
+  // },
+  // {
+  //   title: 'Import',
+  //   to: '/dashboard/import',
+  //   icon: Import,
+  //   activeOptions: { exact: false },
+  // },
+  // {
+  //   title: 'Discover',
+  //   to: '/dashboard/discover',
+  //   icon: Compass,
+  //   activeOptions: { exact: false },
+  // },
   {
     title: 'Import JSON',
     to: '/dashboard/import-json',
@@ -45,6 +45,12 @@ const navItems: NavPrimaryProps['items'] = linkOptions([
     title: 'Imported JSON',
     to: '/dashboard/imported-json',
     icon: Import,
+    activeOptions: { exact: false },
+  },
+  {
+    title: 'Scrape link',
+    to: '/dashboard/scrape-link',
+    icon: ChevronsLeftRightEllipsis,
     activeOptions: { exact: false },
   },
 ])
