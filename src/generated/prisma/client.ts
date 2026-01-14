@@ -64,3 +64,8 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type SavedItem = Prisma.SavedItemModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel

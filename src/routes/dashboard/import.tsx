@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   type BulkScrapeProgress,
   bulkScrapeUrlsFn,
+  getItemsFromUrlFn,
   mapUrlFn,
   scrapeUrlFn,
 } from '@/data/items'
@@ -81,14 +82,14 @@ function RouteComponent() {
 
   const form = useForm({
     defaultValues: {
-      url: '',
+      url: 'https://www.albertsons.com/shop/search-results.html?q=wine&tab=products',
     },
     validators: {
       onSubmit: importSchema,
     },
     onSubmit: ({ value }) => {
       startTransition(async () => {
-        await scrapeUrlFn({ data: value })
+        await getItemsFromUrlFn({ data: value })
         toast.success('Item imported successfully')
       })
     },

@@ -35,6 +35,18 @@ const navItems: NavPrimaryProps['items'] = linkOptions([
     icon: Compass,
     activeOptions: { exact: false },
   },
+  {
+    title: 'Import JSON',
+    to: '/dashboard/import-json',
+    icon: Import,
+    activeOptions: { exact: false },
+  },
+  {
+    title: 'Imported JSON',
+    to: '/dashboard/imported-json',
+    icon: Import,
+    activeOptions: { exact: false },
+  },
 ])
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

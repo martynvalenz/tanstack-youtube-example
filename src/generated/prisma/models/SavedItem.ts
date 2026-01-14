@@ -61,6 +61,7 @@ export type SavedItemCountAggregateOutputType = {
   content: number
   summary: number
   tags: number
+  products: number
   author: number
   publishedAt: number
   ogImage: number
@@ -109,6 +110,7 @@ export type SavedItemCountAggregateInputType = {
   content?: true
   summary?: true
   tags?: true
+  products?: true
   author?: true
   publishedAt?: true
   ogImage?: true
@@ -198,6 +200,7 @@ export type SavedItemGroupByOutputType = {
   content: string | null
   summary: string | null
   tags: string[]
+  products: runtime.JsonValue[]
   author: string | null
   publishedAt: Date | null
   ogImage: string | null
@@ -235,6 +238,7 @@ export type SavedItemWhereInput = {
   content?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   summary?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   tags?: Prisma.StringNullableListFilter<"SavedItem">
+  products?: Prisma.JsonNullableListFilter<"SavedItem">
   author?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"SavedItem"> | Date | string | null
   ogImage?: Prisma.StringNullableFilter<"SavedItem"> | string | null
@@ -252,6 +256,7 @@ export type SavedItemOrderByWithRelationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
+  products?: Prisma.SortOrder
   author?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ogImage?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -272,6 +277,7 @@ export type SavedItemWhereUniqueInput = Prisma.AtLeast<{
   content?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   summary?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   tags?: Prisma.StringNullableListFilter<"SavedItem">
+  products?: Prisma.JsonNullableListFilter<"SavedItem">
   author?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"SavedItem"> | Date | string | null
   ogImage?: Prisma.StringNullableFilter<"SavedItem"> | string | null
@@ -289,6 +295,7 @@ export type SavedItemOrderByWithAggregationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
+  products?: Prisma.SortOrder
   author?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ogImage?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -311,6 +318,7 @@ export type SavedItemScalarWhereWithAggregatesInput = {
   content?: Prisma.StringNullableWithAggregatesFilter<"SavedItem"> | string | null
   summary?: Prisma.StringNullableWithAggregatesFilter<"SavedItem"> | string | null
   tags?: Prisma.StringNullableListFilter<"SavedItem">
+  products?: Prisma.JsonNullableListFilter<"SavedItem">
   author?: Prisma.StringNullableWithAggregatesFilter<"SavedItem"> | string | null
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SavedItem"> | Date | string | null
   ogImage?: Prisma.StringNullableWithAggregatesFilter<"SavedItem"> | string | null
@@ -327,6 +335,7 @@ export type SavedItemCreateInput = {
   content?: string | null
   summary?: string | null
   tags?: Prisma.SavedItemCreatetagsInput | string[]
+  products?: Prisma.SavedItemCreateproductsInput | runtime.InputJsonValue[]
   author?: string | null
   publishedAt?: Date | string | null
   ogImage?: string | null
@@ -343,6 +352,7 @@ export type SavedItemUncheckedCreateInput = {
   content?: string | null
   summary?: string | null
   tags?: Prisma.SavedItemCreatetagsInput | string[]
+  products?: Prisma.SavedItemCreateproductsInput | runtime.InputJsonValue[]
   author?: string | null
   publishedAt?: Date | string | null
   ogImage?: string | null
@@ -359,6 +369,7 @@ export type SavedItemUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -375,6 +386,7 @@ export type SavedItemUncheckedUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -391,6 +403,7 @@ export type SavedItemCreateManyInput = {
   content?: string | null
   summary?: string | null
   tags?: Prisma.SavedItemCreatetagsInput | string[]
+  products?: Prisma.SavedItemCreateproductsInput | runtime.InputJsonValue[]
   author?: string | null
   publishedAt?: Date | string | null
   ogImage?: string | null
@@ -407,6 +420,7 @@ export type SavedItemUpdateManyMutationInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -422,6 +436,7 @@ export type SavedItemUncheckedUpdateManyInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -449,6 +464,21 @@ export type StringNullableListFilter<$PrismaModel = never> = {
   isEmpty?: boolean
 }
 
+export type JsonNullableListFilter<$PrismaModel = never> =
+| Prisma.PatchUndefined<
+    Prisma.Either<Required<JsonNullableListFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableListFilterBase<$PrismaModel>>, 'path'>>,
+    Required<JsonNullableListFilterBase<$PrismaModel>>
+  >
+| Prisma.OptionalFlat<Omit<Required<JsonNullableListFilterBase<$PrismaModel>>, 'path'>>
+
+export type JsonNullableListFilterBase<$PrismaModel = never> = {
+  equals?: runtime.InputJsonValue[] | Prisma.ListJsonFieldRefInput<$PrismaModel> | null
+  has?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  hasEvery?: runtime.InputJsonValue[] | Prisma.ListJsonFieldRefInput<$PrismaModel>
+  hasSome?: runtime.InputJsonValue[] | Prisma.ListJsonFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type SavedItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   url?: Prisma.SortOrder
@@ -456,6 +486,7 @@ export type SavedItemCountOrderByAggregateInput = {
   content?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   tags?: Prisma.SortOrder
+  products?: Prisma.SortOrder
   author?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   ogImage?: Prisma.SortOrder
@@ -541,9 +572,18 @@ export type SavedItemCreatetagsInput = {
   set: string[]
 }
 
+export type SavedItemCreateproductsInput = {
+  set: runtime.InputJsonValue[]
+}
+
 export type SavedItemUpdatetagsInput = {
   set?: string[]
   push?: string | string[]
+}
+
+export type SavedItemUpdateproductsInput = {
+  set?: runtime.InputJsonValue[]
+  push?: runtime.InputJsonValue | runtime.InputJsonValue[]
 }
 
 export type EnumItemStatusFieldUpdateOperationsInput = {
@@ -557,6 +597,7 @@ export type SavedItemCreateWithoutUserInput = {
   content?: string | null
   summary?: string | null
   tags?: Prisma.SavedItemCreatetagsInput | string[]
+  products?: Prisma.SavedItemCreateproductsInput | runtime.InputJsonValue[]
   author?: string | null
   publishedAt?: Date | string | null
   ogImage?: string | null
@@ -572,6 +613,7 @@ export type SavedItemUncheckedCreateWithoutUserInput = {
   content?: string | null
   summary?: string | null
   tags?: Prisma.SavedItemCreatetagsInput | string[]
+  products?: Prisma.SavedItemCreateproductsInput | runtime.InputJsonValue[]
   author?: string | null
   publishedAt?: Date | string | null
   ogImage?: string | null
@@ -616,6 +658,7 @@ export type SavedItemScalarWhereInput = {
   content?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   summary?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   tags?: Prisma.StringNullableListFilter<"SavedItem">
+  products?: Prisma.JsonNullableListFilter<"SavedItem">
   author?: Prisma.StringNullableFilter<"SavedItem"> | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"SavedItem"> | Date | string | null
   ogImage?: Prisma.StringNullableFilter<"SavedItem"> | string | null
@@ -632,6 +675,7 @@ export type SavedItemCreateManyUserInput = {
   content?: string | null
   summary?: string | null
   tags?: Prisma.SavedItemCreatetagsInput | string[]
+  products?: Prisma.SavedItemCreateproductsInput | runtime.InputJsonValue[]
   author?: string | null
   publishedAt?: Date | string | null
   ogImage?: string | null
@@ -647,6 +691,7 @@ export type SavedItemUpdateWithoutUserInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -662,6 +707,7 @@ export type SavedItemUncheckedUpdateWithoutUserInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -677,6 +723,7 @@ export type SavedItemUncheckedUpdateManyWithoutUserInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.SavedItemUpdatetagsInput | string[]
+  products?: Prisma.SavedItemUpdateproductsInput | runtime.InputJsonValue[]
   author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ogImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -694,6 +741,7 @@ export type SavedItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   content?: boolean
   summary?: boolean
   tags?: boolean
+  products?: boolean
   author?: boolean
   publishedAt?: boolean
   ogImage?: boolean
@@ -711,6 +759,7 @@ export type SavedItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   content?: boolean
   summary?: boolean
   tags?: boolean
+  products?: boolean
   author?: boolean
   publishedAt?: boolean
   ogImage?: boolean
@@ -728,6 +777,7 @@ export type SavedItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   content?: boolean
   summary?: boolean
   tags?: boolean
+  products?: boolean
   author?: boolean
   publishedAt?: boolean
   ogImage?: boolean
@@ -745,6 +795,7 @@ export type SavedItemSelectScalar = {
   content?: boolean
   summary?: boolean
   tags?: boolean
+  products?: boolean
   author?: boolean
   publishedAt?: boolean
   ogImage?: boolean
@@ -754,7 +805,7 @@ export type SavedItemSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SavedItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "url" | "title" | "content" | "summary" | "tags" | "author" | "publishedAt" | "ogImage" | "userId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["savedItem"]>
+export type SavedItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "url" | "title" | "content" | "summary" | "tags" | "products" | "author" | "publishedAt" | "ogImage" | "userId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["savedItem"]>
 export type SavedItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -777,6 +828,7 @@ export type $SavedItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     content: string | null
     summary: string | null
     tags: string[]
+    products: runtime.JsonValue[]
     author: string | null
     publishedAt: Date | null
     ogImage: string | null
@@ -1214,6 +1266,7 @@ export interface SavedItemFieldRefs {
   readonly content: Prisma.FieldRef<"SavedItem", 'String'>
   readonly summary: Prisma.FieldRef<"SavedItem", 'String'>
   readonly tags: Prisma.FieldRef<"SavedItem", 'String[]'>
+  readonly products: Prisma.FieldRef<"SavedItem", 'Json[]'>
   readonly author: Prisma.FieldRef<"SavedItem", 'String'>
   readonly publishedAt: Prisma.FieldRef<"SavedItem", 'DateTime'>
   readonly ogImage: Prisma.FieldRef<"SavedItem", 'String'>

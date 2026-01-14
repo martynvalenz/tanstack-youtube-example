@@ -14,6 +14,8 @@ import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardItemsRouteImport } from './routes/dashboard/items'
+import { Route as DashboardImportedJsonRouteImport } from './routes/dashboard/imported-json'
+import { Route as DashboardImportJsonRouteImport } from './routes/dashboard/import-json'
 import { Route as DashboardImportRouteImport } from './routes/dashboard/import'
 import { Route as DashboardDiscoverRouteImport } from './routes/dashboard/discover'
 import { Route as AuthSignUpIndexRouteImport } from './routes/_auth/sign-up/index'
@@ -42,6 +44,16 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
 const DashboardItemsRoute = DashboardItemsRouteImport.update({
   id: '/items',
   path: '/items',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardImportedJsonRoute = DashboardImportedJsonRouteImport.update({
+  id: '/imported-json',
+  path: '/imported-json',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardImportJsonRoute = DashboardImportJsonRouteImport.update({
+  id: '/import-json',
+  path: '/import-json',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardImportRoute = DashboardImportRouteImport.update({
@@ -75,6 +87,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/discover': typeof DashboardDiscoverRoute
   '/dashboard/import': typeof DashboardImportRoute
+  '/dashboard/import-json': typeof DashboardImportJsonRoute
+  '/dashboard/imported-json': typeof DashboardImportedJsonRoute
   '/dashboard/items': typeof DashboardItemsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -85,6 +99,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard/discover': typeof DashboardDiscoverRoute
   '/dashboard/import': typeof DashboardImportRoute
+  '/dashboard/import-json': typeof DashboardImportJsonRoute
+  '/dashboard/imported-json': typeof DashboardImportedJsonRoute
   '/dashboard/items': typeof DashboardItemsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -98,6 +114,8 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/discover': typeof DashboardDiscoverRoute
   '/dashboard/import': typeof DashboardImportRoute
+  '/dashboard/import-json': typeof DashboardImportJsonRoute
+  '/dashboard/imported-json': typeof DashboardImportedJsonRoute
   '/dashboard/items': typeof DashboardItemsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -111,6 +129,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/discover'
     | '/dashboard/import'
+    | '/dashboard/import-json'
+    | '/dashboard/imported-json'
     | '/dashboard/items'
     | '/dashboard/'
     | '/api/auth/$'
@@ -121,6 +141,8 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard/discover'
     | '/dashboard/import'
+    | '/dashboard/import-json'
+    | '/dashboard/imported-json'
     | '/dashboard/items'
     | '/dashboard'
     | '/api/auth/$'
@@ -133,6 +155,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/discover'
     | '/dashboard/import'
+    | '/dashboard/import-json'
+    | '/dashboard/imported-json'
     | '/dashboard/items'
     | '/dashboard/'
     | '/api/auth/$'
@@ -182,6 +206,20 @@ declare module '@tanstack/react-router' {
       path: '/items'
       fullPath: '/dashboard/items'
       preLoaderRoute: typeof DashboardItemsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/imported-json': {
+      id: '/dashboard/imported-json'
+      path: '/imported-json'
+      fullPath: '/dashboard/imported-json'
+      preLoaderRoute: typeof DashboardImportedJsonRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/import-json': {
+      id: '/dashboard/import-json'
+      path: '/import-json'
+      fullPath: '/dashboard/import-json'
+      preLoaderRoute: typeof DashboardImportJsonRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/import': {
@@ -239,6 +277,8 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 interface DashboardRouteRouteChildren {
   DashboardDiscoverRoute: typeof DashboardDiscoverRoute
   DashboardImportRoute: typeof DashboardImportRoute
+  DashboardImportJsonRoute: typeof DashboardImportJsonRoute
+  DashboardImportedJsonRoute: typeof DashboardImportedJsonRoute
   DashboardItemsRoute: typeof DashboardItemsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
@@ -246,6 +286,8 @@ interface DashboardRouteRouteChildren {
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardDiscoverRoute: DashboardDiscoverRoute,
   DashboardImportRoute: DashboardImportRoute,
+  DashboardImportJsonRoute: DashboardImportJsonRoute,
+  DashboardImportedJsonRoute: DashboardImportedJsonRoute,
   DashboardItemsRoute: DashboardItemsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
