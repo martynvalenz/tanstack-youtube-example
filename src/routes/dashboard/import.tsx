@@ -76,18 +76,6 @@ function RouteComponent() {
     setSelectedUrls(newSelected)
   }
 
-  const handleBulkImport = () => {
-    if (selectedUrls.size === 0) {
-      toast.error('Please select at least one url')
-      return
-    }
-
-    startBulkTransition(async () => {
-      await bulkScrapeUrlsFn({ data: { urls: Array.from(selectedUrls) } })
-      toast.success(`${selectedUrls.size} items imported successfully`)
-    })
-  }
-
   const form = useForm({
     defaultValues: {
       url: '',
@@ -119,6 +107,41 @@ function RouteComponent() {
       })
     },
   })
+
+  const handleBulkImport = () => {
+    if (selectedUrls.size === 0) {
+      toast.error('Please select at least one url')
+      return
+    }
+
+    startBulkTransition(async () => {
+      setProgress({
+        completed: 0,
+        total: selectedUrls.size,
+        url: '',
+        status: 'success',
+      })
+      let successCount = 0
+      let failedCount = 0
+      // await bulkScrapeUrlsFn({ data: { urls: Array.from(selectedUrls) } })
+      for await (const update of await bulkScrapeUrlsFn({
+        data: { urls: Array.from(selectedUrls) },
+      })) {
+        setProgress(update)
+        if (update.status === 'success') {
+          successCount++
+        } else {
+          failedCount++
+        }
+      }
+      setProgress(null)
+      if (failedCount > 0) {
+        toast.error(`Imported ${successCount} Urls ${failedCount} failed`)
+      } else {
+        toast.success(`Imported ${successCount} Urls successfully`)
+      }
+    })
+  }
 
   return (
     <div className="flex flex-1 items-center justify-center py-8">
@@ -156,9 +179,8 @@ function RouteComponent() {
                   }}
                 >
                   <FieldGroup>
-                    <form.Field
-                      name="url"
-                      children={(field) => {
+                    <form.Field name="url">
+                      {(field) => {
                         const isInvalid =
                           field.state.meta.isTouched &&
                           !field.state.meta.isValid
@@ -184,7 +206,7 @@ function RouteComponent() {
                           </Field>
                         )
                       }}
-                    />
+                    </form.Field>
                     <Button type="submit" disabled={isPending}>
                       {isPending ? (
                         <>
@@ -216,9 +238,8 @@ function RouteComponent() {
                   }}
                 >
                   <FieldGroup>
-                    <bulkForm.Field
-                      name="url"
-                      children={(field) => {
+                    <bulkForm.Field name="url">
+                      {(field) => {
                         const isInvalid =
                           field.state.meta.isTouched &&
                           !field.state.meta.isValid
@@ -244,10 +265,9 @@ function RouteComponent() {
                           </Field>
                         )
                       }}
-                    />
-                    <bulkForm.Field
-                      name="search"
-                      children={(field) => {
+                    </bulkForm.Field>
+                    <bulkForm.Field name="search">
+                      {(field) => {
                         const isInvalid =
                           field.state.meta.isTouched &&
                           !field.state.meta.isValid
@@ -273,7 +293,7 @@ function RouteComponent() {
                           </Field>
                         )
                       }}
-                    />
+                    </bulkForm.Field>
                     <Button type="submit" disabled={bulkIsPending}>
                       {bulkIsPending ? (
                         <>

@@ -110,15 +110,16 @@ function RouteComponent() {
           Go back
         </Link>
       </div>
-      {data.ogImage && (
-        <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
-          <img
-            src={data.ogImage}
-            alt={data.title || 'No title'}
-            className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
-          />
-        </div>
-      )}
+      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
+        <img
+          src={
+            data.ogImage ??
+            'https://images.pexels.com/photos/6985001/pexels-photo-6985001.jpeg?_gl=1*trpkt7*_ga*MTQ2MDI0NjE3Ny4xNzY4Njc2MzI2*_ga_8JE65Q40S6*czE3Njg2NzYzMjUkbzEkZzEkdDE3Njg2NzYzMjgkajU3JGwwJGgw'
+          }
+          alt={data.title || 'No title'}
+          className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+        />
+      </div>
       <div className="space-y-3">
         <h1 className="text-3xl font-bold">{data.title || 'No title'}</h1>
         {/* Metadata */}

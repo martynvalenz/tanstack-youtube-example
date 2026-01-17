@@ -5,6 +5,7 @@ import {
   type ExtractSchema,
   extractSchema,
   importSchema,
+  searchSchema,
 } from '@/schemas/import'
 import { prisma } from '@/db'
 import { ItemStatus } from '@/generated/prisma/enums'
@@ -14,6 +15,7 @@ import fetch from 'node-fetch'
 import { notFound } from '@tanstack/react-router'
 import { generateText } from 'ai'
 import { openrouter } from '@/lib/open-router'
+import { SearchResultWeb } from '@mendable/firecrawl-js'
 
 const BASE =
   'https://www.albertsons.com/abs/pub/xapi/pgmsearch/v1/search/products'
@@ -109,7 +111,8 @@ export const bulkScrapeUrlsFn = createServerFn({
       urls: z.array(z.string().url()),
     }),
   )
-  .handler(async ({ data, context }) => {
+  .handler(async function* ({ data, context }) {
+    const total = data.urls.length
     for (let i = 0; i < data.urls.length; i++) {
       const url = data.urls[i]
 
@@ -120,6 +123,8 @@ export const bulkScrapeUrlsFn = createServerFn({
           status: ItemStatus.PENDING,
         },
       })
+      let status: BulkScrapeProgress['status'] = 'success'
+
       try {
         const result = await firecrawl.scrape(url, {
           formats: [
@@ -155,6 +160,8 @@ export const bulkScrapeUrlsFn = createServerFn({
           },
         })
       } catch (error) {
+        status = 'failed'
+        console.error(error)
         await prisma.savedItem.update({
           where: {
             id: item.id,
@@ -164,6 +171,13 @@ export const bulkScrapeUrlsFn = createServerFn({
           },
         })
       }
+      const progress: BulkScrapeProgress = {
+        completed: i + 1,
+        total,
+        url,
+        status,
+      }
+      yield progress
     }
   })
 
@@ -348,4 +362,22 @@ export const saveSummaryAndGenerateTagsFn = createServerFn({
     })
 
     return item
+  })
+
+export const searchWebFn = createServerFn({ method: 'POST' })
+  .middleware([authFnMiddleware])
+  .inputValidator(searchSchema)
+  .handler(async ({ data }) => {
+    const result = await firecrawl.search(data.query, {
+      limit: 15,
+      // scrapeOptions: { formats: ['markdown'] },
+      location: 'Mexico',
+      tbs: 'qdr:y',
+    })
+
+    return result.web?.map((item) => ({
+      url: (item as SearchResultWeb).url,
+      title: (item as SearchResultWeb).title,
+      description: (item as SearchResultWeb).description,
+    })) as SearchResultWeb[]
   })

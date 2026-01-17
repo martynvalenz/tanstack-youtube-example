@@ -1,6 +1,11 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { getItemsFn } from '@/data/items'
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Copy, Inbox } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -113,19 +118,16 @@ function ItemsList() {
             params={{ itemId: item.id }}
             className="block"
           >
-            {item.ogImage ? (
-              <div className="aspect-video w-full overflow-hidden bg-muted">
-                <img
-                  src={item.ogImage}
-                  alt={item.title || 'No title'}
-                  className="h-full w-full object-cover group-hover:scale-105 transition-all"
-                />
-              </div>
-            ) : (
-              <div className="h-48 bg-slate-500">
-                <p className="text-center text-slate-500">No image</p>
-              </div>
-            )}
+            <div className="aspect-video w-full overflow-hidden bg-muted">
+              <img
+                src={
+                  item.ogImage ??
+                  'https://images.pexels.com/photos/6985001/pexels-photo-6985001.jpeg?_gl=1*trpkt7*_ga*MTQ2MDI0NjE3Ny4xNzY4Njc2MzI2*_ga_8JE65Q40S6*czE3Njg2NzYzMjUkbzEkZzEkdDE3Njg2NzYzMjgkajU3JGwwJGgw'
+                }
+                alt={item.title || 'No title'}
+                className="h-full w-full object-cover group-hover:scale-105 transition-all"
+              />
+            </div>
             <CardHeader className="space-y-3 pt-4">
               <div className="flex items-center justify-between gap-2">
                 <Badge
@@ -154,6 +156,21 @@ function ItemsList() {
               </CardTitle>
               {item.author && (
                 <p className="text-xs text-muted-foreground">{item.author}</p>
+              )}
+              {item.summary && (
+                <CardDescription className="line-clamp-3 text-sm">
+                  {item.summary}
+                </CardDescription>
+              )}
+              {/* Tags */}
+              {item.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {item.tags.slice(0, 4).map((tag) => (
+                    <Badge key={tag} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
               )}
             </CardHeader>
           </Link>

@@ -92,9 +92,8 @@ function RouteComponent() {
               }}
             >
               <FieldGroup>
-                <form.Field
-                  name="url"
-                  children={(field) => {
+                <form.Field name="url">
+                  {(field) => {
                     const isInvalid =
                       field.state.meta.isTouched && !field.state.meta.isValid
                     return (
@@ -114,7 +113,7 @@ function RouteComponent() {
                       </Field>
                     )
                   }}
-                />
+                </form.Field>
                 <Button type="submit" disabled={isPending}>
                   {isPending ? (
                     <>
