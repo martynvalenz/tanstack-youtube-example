@@ -10,8 +10,10 @@ import { prisma } from '@/db'
 import { ItemStatus } from '@/generated/prisma/enums'
 import { authFnMiddleware } from '@/middlewares/auth.middleware'
 import z from 'zod'
-import { chromium } from 'playwright'
 import fetch from 'node-fetch'
+import { notFound } from '@tanstack/react-router'
+import { generateText } from 'ai'
+import { openrouter } from '@/lib/open-router'
 
 const BASE =
   'https://www.albertsons.com/abs/pub/xapi/pgmsearch/v1/search/products'
@@ -170,6 +172,7 @@ export const getItemsFn = createServerFn({
 })
   .middleware([authFnMiddleware])
   .handler(async ({ context }) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     const items = await prisma.savedItem.findMany({
       where: {
         userId: context.user.id,
@@ -279,4 +282,70 @@ export const getItemsFromUrlFn = createServerFn({
     console.log(links.slice(0, 10))
 
     return links
+  })
+
+export const getItemByIdFn = createServerFn({
+  method: 'GET',
+})
+  .middleware([authFnMiddleware])
+  .inputValidator(z.object({ id: z.string() }))
+  .handler(async ({ data, context }) => {
+    const item = await prisma.savedItem.findUnique({
+      where: {
+        id: data.id,
+        userId: context.user.id,
+      },
+    })
+
+    if (!item) {
+      throw notFound()
+    }
+
+    return item
+  })
+
+export const saveSummaryAndGenerateTagsFn = createServerFn({
+  method: 'POST',
+})
+  .middleware([authFnMiddleware])
+  .inputValidator(z.object({ id: z.string(), summary: z.string() }))
+  .handler(async ({ data, context }) => {
+    const existingItem = await prisma.savedItem.findUnique({
+      where: {
+        id: data.id,
+        userId: context.user.id,
+      },
+    })
+
+    if (!existingItem) {
+      throw notFound()
+    }
+
+    const { text } = await generateText({
+      model: openrouter.chat('xiaomi/mimo-v2-flash:free'),
+      system: `You are a helpful assistant that extracts relevant tags from content summaries.
+      Extract 3-5 short, relevant tags that categorize the content.
+      Return ONLY a comma-separated list of tags, nothing else.
+      Example: technology, programming, web development, javascript`,
+      prompt: `Extract tags from this summary: \n\n${data.summary}`,
+    })
+
+    const tags = text
+      .split(',')
+      .map((tag) => tag.trim().toLowerCase())
+      .filter((tag) => tag.length > 0)
+      .slice(0, 5)
+
+    const item = await prisma.savedItem.update({
+      where: {
+        id: data.id,
+        userId: context.user.id,
+      },
+      data: {
+        summary: data.summary,
+        tags,
+      },
+    })
+
+    return item
   })

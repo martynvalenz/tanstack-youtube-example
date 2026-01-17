@@ -20,7 +20,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   type BulkScrapeProgress,
   bulkScrapeUrlsFn,
-  getItemsFromUrlFn,
   mapUrlFn,
   scrapeUrlFn,
 } from '@/data/items'
@@ -37,6 +36,15 @@ import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/import')({
+  head: () => {
+    return {
+      meta: [
+        {
+          title: 'Import content',
+        },
+      ],
+    }
+  },
   component: RouteComponent,
 })
 
@@ -82,14 +90,14 @@ function RouteComponent() {
 
   const form = useForm({
     defaultValues: {
-      url: 'https://www.albertsons.com/shop/search-results.html?q=wine&tab=products',
+      url: '',
     },
     validators: {
       onSubmit: importSchema,
     },
     onSubmit: ({ value }) => {
       startTransition(async () => {
-        await getItemsFromUrlFn({ data: value })
+        await scrapeUrlFn({ data: value })
         toast.success('Item imported successfully')
       })
     },
@@ -302,6 +310,7 @@ function RouteComponent() {
                         <label
                           key={link.url}
                           className="hover:bg-muted/50 flex cursor-pointer items-start gap-3 rounded-md p-2"
+                          htmlFor={link.url}
                         >
                           <Checkbox
                             checked={selectedUrls.has(link.url)}
