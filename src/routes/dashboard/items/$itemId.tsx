@@ -73,7 +73,7 @@ export const Route = createFileRoute('/dashboard/items/$itemId')({
 function RouteComponent() {
   const data = Route.useLoaderData()
   const router = useRouter()
-  const [contentOpen, setContentOpen] = useState(false)
+  const [contentOpen, setContentOpen] = useState(true)
   const { completion, complete, isLoading } = useCompletion({
     api: '/api/ai/summary',
     initialCompletion: data.summary ? data.summary : undefined,
